@@ -1,5 +1,4 @@
 import Button from "../../components/Button";
-import { theme } from "../../constants/theme";
 import { LoadingProvider } from "../../context/LoadingContext";
 import { usePlayer } from "../../context/PlayerContext";
 import { icons } from "../../utils/imports";

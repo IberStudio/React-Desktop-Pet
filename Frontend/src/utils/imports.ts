@@ -20,6 +20,10 @@ import downArrow from "../assets/icons/down-arrow.png";
 import petIcon from "../assets/icons/pet.png";
 import restore from "../assets/icons/restore.png";
 import miniDisplay from "../assets/icons/mini-display.png";
+import calendar from "../assets/icons/calendar.png";
+import chevLeft from "../assets/icons/chevLeft.png";
+import chevRight from "../assets/icons/chevRight.png";
+import add from "../assets/icons/add.png";
 
 export const icons = {
     gear,
@@ -42,6 +46,10 @@ export const icons = {
     petIcon,
     restore,
     miniDisplay,
+    calendar,
+    chevLeft,
+    chevRight,
+    add,
 } as const;
 
 import baseBorder from "../assets/borders/base.png";

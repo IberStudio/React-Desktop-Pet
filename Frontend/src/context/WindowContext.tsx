@@ -11,6 +11,7 @@ export type WindowState = {
     size: number;
     title: string;
     hidden?: boolean;
+    draggable?: boolean;
     children?: ReactNode;
 };
 

@@ -1,1 +1,1 @@
-export type Pages = "home" | "tasks" | "settings" | "music" | "pet";
+export type Pages = "home" | "tasks" | "settings" | "music" | "pet" | "schedule";

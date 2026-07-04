@@ -61,11 +61,12 @@ const Button = ({ cn, value, type, size = BorderSize.medium, color, onClick }: B
 
     return (
         <button
-        className={`${cn} max-h-12 p-1 rounded-md
+        className={`max-h-12 p-1 rounded-md
         ${color ? `${color}` : `${theme.primary.bg} ${theme.secondary.text} [&_img]:invert`} 
         border-3 ${theme.outline.border}
         shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
         cursor-pointer
+        ${cn}
         `}
         type={type as ButtonType}
         onClick={onClick}

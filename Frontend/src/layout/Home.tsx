@@ -1,14 +1,10 @@
-import { use, useEffect, useState } from "react";
 import Button from "../components/Button";
-import TaskItemContainer from "../components/TasksItem";
 import { theme } from "../constants/theme";
 import { usePlayer } from "../context/PlayerContext";
 import { useWindows } from "../context/WindowContext";
 import { icons } from "../utils/imports";
-import type { Task } from "../types/task";
-import { getData } from "../utils/api";
 import { LoadingProvider } from "../context/LoadingContext";
-import Timer from "./Timer";
+import Tasks from "./Tasks";
 
 const HomeMusic = () => {
   const { 
@@ -94,27 +90,11 @@ const HomeMusic = () => {
 }
 
 const HomeTask = () => {
-  
-  const [tasks, setTasks] = useState<Task[]>([]);
 
-  useEffect(() => {
-    const loadTasks = async () => {
-      let data
-      try {
-        data = await getData<Task[]>("tasks");
-      }
-      finally {
-      }
-      setTasks(data ?? []);
-    }
-
-    loadTasks();
-  }, [])
-  
   return (
     <div className={`relative flex-1 min-h-0 flex`}>
       <LoadingProvider loadingKey='Task Item'/>
-      <TaskItemContainer cn="p-4 max-h-full" tasks={tasks} setTasks={setTasks}/>
+      <Tasks />
     </div>
   )
 }

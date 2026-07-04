@@ -10,8 +10,8 @@ const navItem = [
     icon: icons.home
   },
   {
-    name: "tasks" as Pages,
-    icon: icons.list
+    name: "schedule" as Pages,
+    icon: icons.calendar
   },
   {
     name: "music" as Pages,

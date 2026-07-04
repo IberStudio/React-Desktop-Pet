@@ -2,7 +2,6 @@ import { useRef } from "react";
 import type { Task } from "../types/task";
 import { postData } from "../utils/api";
 import Button from "./Button";
-import { useLoading } from "../context/LoadingContext";
 import { theme } from "../constants/theme";
 
 type Props = {
@@ -40,7 +39,6 @@ const TasksForm = ({ tasks, setTasks }: Props) => {
   return (
     <form
       className={`w-full flex flex-row justify-between gap-8 p-2`}
-
       onSubmit={handleSubmit}
     >
       <input

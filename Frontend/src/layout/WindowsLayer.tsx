@@ -24,7 +24,7 @@ function WindowsLayer({
                 title={w.title}
                 size={w.size}
                 cn="pointer-events-auto size-fit"
-                draggable={true}
+                draggable={w.draggable || true}
                 >
                 {w.children}
                 </Window>

@@ -10,9 +10,9 @@ import { WindowProvider, type WindowState } from './context/WindowContext';
 import WindowsLayer from './layout/WindowsLayer';
 import MusicPlayer from './layout/Windowed/MusicPlayer';
 import { BorderSize } from './constants/borders';
+import { SelectedDateProvider } from './context/ScheduleContext';
 
 const initialWindows: WindowState[] = [
-  // { id: 1, x: 100, y: 500, width: 0, height: 0, size: BorderSize.small, title: "Timer", children: <Timer /> },
   { id: 2, x: 800, y: 500, width: 0, height: 0, size: BorderSize.small, title: "Music", children: <MusicPlayer /> },
 ];
 
@@ -41,17 +41,19 @@ function App() {
 
         <PlayerProvider>
           <WindowProvider initialWindows={initialWindows}>
-            <div 
-              className='w-full h-full flex-1 min-h-0'
-            >
-              <Main 
-              isHidden={isHidden} 
-              toggleHidden={toggleHidden}
-              ignoreFalse={() => window.electronAPI.setIgnoreMouseEvents(false)}
-              ignoreTrue={() => window.electronAPI.setIgnoreMouseEvents(true)}
-              closeApp={() => window.electronAPI.close()}
-              />
-            </div>
+            <SelectedDateProvider>
+              <div 
+                className='w-full h-full flex-1 min-h-0'
+              >
+                <Main 
+                isHidden={isHidden} 
+                toggleHidden={toggleHidden}
+                ignoreFalse={() => window.electronAPI.setIgnoreMouseEvents(false)}
+                ignoreTrue={() => window.electronAPI.setIgnoreMouseEvents(true)}
+                closeApp={() => window.electronAPI.close()}
+                />
+              </div>
+            </SelectedDateProvider>
 
             <WindowsLayer 
             ignoreTrue={() => window.electronAPI.setIgnoreMouseEvents(true)}

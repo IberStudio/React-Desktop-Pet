@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import Navbar from "./Navbar";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Schedule from "../features/Schedule/Schedule";
 
 gsap.registerPlugin(useGSAP);
 
@@ -18,6 +19,7 @@ const Main = ({ isHidden, toggleHidden, ignoreFalse, ignoreTrue, closeApp }: { i
         settings: <Settings />,
         music: <Music />,
         pet: <PetPages />,
+        schedule: <Schedule />
     };
 
     const [currentPage, setCurrentPage] = useState<Pages>("home")

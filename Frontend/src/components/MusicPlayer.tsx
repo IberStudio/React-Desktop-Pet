@@ -20,7 +20,6 @@ const MusicPlayer = () => {
     } = usePlayer();
 
     const {
-        windows,
         showWindow
     } = useWindows();
 
@@ -68,7 +67,7 @@ const MusicPlayer = () => {
                     <Button value={{ name: "Play", url: isPlaying ? icons.pause : icons.play }} type="button" onClick={togglePlay} />
                     <Button value={{ name: "Next", url: icons.next }} type="button" onClick={playNext} />
                 </div>
-                <Button cn='w-fit h-fit' value={{ name: "Display", url: icons.miniDisplay }} type="button" onClick={() => {showWindow(2); console.log(windows)}}/>
+                <Button cn='w-fit h-fit' value={{ name: "Display", url: icons.miniDisplay }} type="button" onClick={() => {showWindow(2)}}/>
             </div>
 
             <div className='w-full flex flex-row justify-between items-center mt-2 px-4 py-8'>

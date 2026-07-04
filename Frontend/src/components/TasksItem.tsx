@@ -29,6 +29,7 @@ const TaskItem = ({
         flex flex-row justify-between items-center p-2 
         bg-white
         ${theme.outline.border} border-4 rounded-2xl
+        shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
       `}
 
     >

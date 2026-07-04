@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { loadings } from "../utils/imports";
 import { registerLoadingSetter, unregisterLoadingSetter } from "../services/loadingBridge";
 import { theme } from "../constants/theme";
 
