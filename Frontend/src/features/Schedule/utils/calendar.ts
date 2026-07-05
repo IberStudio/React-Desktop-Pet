@@ -38,3 +38,20 @@ export function buildMonthGrid(year: number, month: number): { key: string; day:
 
     return cells;
 }
+
+export function enumerateDates(start: string, end: string): string[] {
+    const [s, e] = start <= end ? [start, end] : [end, start];
+    const [sy, sm, sd] = s.split("-").map(Number);
+    const [ey, em, ed] = e.split("-").map(Number);
+
+    const startDate = new Date(sy, sm - 1, sd);
+    const endDate = new Date(ey, em - 1, ed);
+
+    const dates: string[] = [];
+    const cur = new Date(startDate);
+    while (cur <= endDate) {
+        dates.push(toDateKey(cur.getFullYear(), cur.getMonth(), cur.getDate()));
+        cur.setDate(cur.getDate() + 1);
+    }
+    return dates;
+}

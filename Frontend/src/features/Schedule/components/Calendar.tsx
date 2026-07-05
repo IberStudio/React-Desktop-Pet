@@ -3,8 +3,6 @@ import Button from "../../../components/Button";
 import { icons } from "../../../utils/imports";
 import { theme } from "../../../constants/theme";
 import type { ScheduleType } from "../types/schedule";
-import { getData } from "../../../utils/api";
-import type { Endpoint } from "../../../types/endpoint";
 import { BorderSize } from "../../../constants/borders";
 import CreateSchedule from "./CreateSchedule";
 import { COLOR_MAP, MONTH_NAMES, WEEKDAYS } from "../constant/constant";
@@ -15,44 +13,41 @@ const Calendar = () => {
     const today = new Date();
     const [viewYear, setViewYear] = useState(today.getFullYear());
     const [viewMonth, setViewMonth] = useState(today.getMonth());
-    const { selectedDate: selectedKey, setSelectedDate: setSelectedKey, allEvents } = useSelectedDate();
-    const [events, setEvents] = useState<ScheduleType[]>([]);
+    const { selectedStart, selectedEnd, setSelectedRange, allEvents } = useSelectedDate();
 
     const todayKey = toDateKey(today.getFullYear(), today.getMonth(), today.getDate());
     const cells = useMemo(() => buildMonthGrid(viewYear, viewMonth), [viewYear, viewMonth]);
 
-    const [hoveredKey, setHoveredKey] = useState<string | null>(null);
     const [showCreate, setShowCreate] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStartKey, setDragStartKey] = useState<string | null>(null);
+    const [dragEndKey, setDragEndKey] = useState<string | null>(null);
 
+    // Live range while dragging; falls back to the committed context range otherwise
+    const activeStart = isDragging ? dragStartKey : selectedStart;
+    const activeEnd = isDragging ? dragEndKey : selectedEnd;
+
+    const [rangeMin, rangeMax] = useMemo(() => {
+        if (!activeStart || !activeEnd) return [null, null];
+        return activeStart <= activeEnd ? [activeStart, activeEnd] : [activeEnd, activeStart];
+    }, [activeStart, activeEnd]);
+
+    function isInRange(key: string) {
+        if (!rangeMin || !rangeMax) return false;
+        return key >= rangeMin && key <= rangeMax;
+    }
+
+    // Commit the drag on mouseup, wherever it happens
     useEffect(() => {
-        let cancelled = false;
-
-        async function fetchMonthEvents() {
-            const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-            const dateKeys = Array.from({ length: daysInMonth }, (_, i) =>
-                toDateKey(viewYear, viewMonth, i + 1)
-            );
-
-            const results = await Promise.all(
-                dateKeys.map((dateKey) =>
-                    getData<ScheduleType[]>(
-                        `schedules?date=${dateKey}` as Endpoint,
-                        "calendar-events"
-                    ).catch(() => [])
-                )
-            );
-
-            if (!cancelled) {
-                setEvents(results.flat());
+        function handleMouseUp() {
+            if (isDragging && dragStartKey && dragEndKey) {
+                setSelectedRange(dragStartKey, dragEndKey);
             }
+            setIsDragging(false);
         }
-
-        fetchMonthEvents();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [viewYear, viewMonth]);
+        window.addEventListener("mouseup", handleMouseUp);
+        return () => window.removeEventListener("mouseup", handleMouseUp);
+    }, [isDragging, dragStartKey, dragEndKey, setSelectedRange]);
 
     const eventsByDate = useMemo(() => {
         const map: Record<string, ScheduleType[]> = {};
@@ -92,7 +87,7 @@ const Calendar = () => {
             w-full h-full min-h-150 flex flex-col overflow-hidden
             ${theme.secondary.bg}
             `}> 
-            <div className="flex items-center gap-4 px-4 py-3">
+            <div className="relative flex items-center gap-4 px-4 py-3">
                 <div className="flex items-center gap-3">
                     <Button 
                     value={{
@@ -120,6 +115,31 @@ const Calendar = () => {
                 type="button"
                 onClick={goToday}
                 />
+
+                <div className="flex-1"/>
+                
+                <Button 
+                cn="mx-3"
+                value={{
+                    name: "Guide",
+                    url: icons.question
+                }}
+                type="button"
+                onClick={goToday}
+                />
+
+                {selectedStart && (
+                    <Button 
+                    value={{
+                        name: "Add",
+                        url: icons.add
+                    }} 
+                    size={BorderSize.large}
+                    type="button"
+                    onClick={() => setShowCreate(true)}
+                    />
+                )}
+
             </div>
 
             {/* Weekday header */}
@@ -135,18 +155,23 @@ const Calendar = () => {
             </div>
 
             {/* Month grid */}
-            <div className="grid grid-cols-7 grid-rows-6 flex-1">
+            <div className="grid grid-cols-7 grid-rows-6 flex-1 select-none">
                 {cells.map((cell, idx) => {
                 const isToday = cell.key === todayKey;
-                const isSelected = cell.key === selectedKey;
+                const isSelected = isInRange(cell.key);
                 const dayEvents = eventsByDate[cell.key] || [];
 
                 return (
                     <button
                     key={idx}
-                    onClick={() => setSelectedKey(cell.key)}
-                    onMouseEnter={() => setHoveredKey(cell.key)}
-                    onMouseLeave={() => setHoveredKey(null)}
+                    onMouseDown={() => {
+                        setIsDragging(true);
+                        setDragStartKey(cell.key);
+                        setDragEndKey(cell.key);
+                    }}
+                    onMouseEnter={() => {
+                        if (isDragging) setDragEndKey(cell.key);
+                    }}
                     className={`relative flex flex-col items-start p-1.5 text-left align-top hover:bg-neutral-200 transition-colors
                         ${!cell.inMonth ? "bg-neutral-50 text-neutral-400" : "text-neutral-800"}
                         ${isSelected ? `border-4 ${theme.primary.border} rounded-sm` : ""}
@@ -178,30 +203,17 @@ const Calendar = () => {
                             </span>
                             )}
                         </div>
-                        {hoveredKey === cell.key && (
-                            <div className="absolute w-full h-full">
-                                <Button 
-                                cn="absolute right-4 bottom-4"
-                                value={{
-                                    name: "Add",
-                                    url: icons.add
-                                }} 
-                                size={BorderSize.small}
-                                type="button"
-                                onClick={() => {
-                                    setSelectedKey(cell.key);
-                                    setShowCreate(true);
-                                }}
-                                />
-                            </div>
-                        )}
                     </button>
                 );
                 })}
             </div>
 
             {showCreate && (
-                <CreateSchedule currentDate={selectedKey as string} onClose={() => setShowCreate(false)} />
+                <CreateSchedule 
+                startDate={selectedStart} 
+                endDate={selectedEnd} 
+                onClose={() => setShowCreate(false)} 
+                />
             )}
         </div>
     );

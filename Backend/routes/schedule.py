@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models.schedule import Schedule, search_data, delete_data
+from models.schedule import Schedule, search_data, delete_data, delete_by_date
 from extensions import db
 from datetime import datetime
 
@@ -41,12 +41,28 @@ def get_schedules():
 
 @schedules_bp.delete("/")
 def delete_schedule():
+    title = request.args.get("title")
+    date = request.args.get("date")
+    hour = request.args.get("hour")
+
+    if not title:
+        return jsonify({"error": "title query parameter is required"}), 400
+
+    deleted = delete_data(title, date, hour)
+
+    if deleted is None:
+        return jsonify({"error": "invalid date or hour format, expected YYYY-MM-DD and HH:MM"}), 400
+
+    return jsonify({"deleted": deleted}), 200
+
+@schedules_bp.delete("/day/")
+def delete_schedules_by_day():
     date = request.args.get("date")
 
     if not date:
         return jsonify({"error": "date query parameter is required"}), 400
 
-    deleted = delete_data(date)
+    deleted = delete_by_date(date)
 
     if deleted is None:
         return jsonify({"error": "invalid date format, expected YYYY-MM-DD"}), 400

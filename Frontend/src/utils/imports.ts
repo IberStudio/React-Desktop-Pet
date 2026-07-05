@@ -24,6 +24,7 @@ import calendar from "../assets/icons/calendar.png";
 import chevLeft from "../assets/icons/chevLeft.png";
 import chevRight from "../assets/icons/chevRight.png";
 import add from "../assets/icons/add.png";
+import question from "../assets/icons/question.png";
 
 export const icons = {
     gear,
@@ -50,6 +51,7 @@ export const icons = {
     chevLeft,
     chevRight,
     add,
+    question
 } as const;
 
 import baseBorder from "../assets/borders/base.png";

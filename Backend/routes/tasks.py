@@ -18,6 +18,9 @@ def get_tasks():
 def create_task():
     data = request.get_json()
 
+    if not data["title"]:
+        return {"error": "Title is required"}, 400
+
     task = Task(title=data["title"])
 
     db.session.add(task)

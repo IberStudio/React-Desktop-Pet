@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { theme } from "../../../constants/theme"
 import Button from "../../../components/Button"
 import { icons } from "../../../utils/imports"
@@ -6,8 +6,10 @@ import { COLOR_MAP } from "../constant/constant"
 import { postData } from "../../../utils/api"
 import type { ScheduleType } from "../types/schedule"
 import { useSelectedDate } from "../../../context/ScheduleContext"
+import { enumerateDates } from "../utils/calendar"
+import { generateTitles } from "../utils/inputShortcut"
 
-const CreateSchedule = ({ currentDate, onClose }: { currentDate: string, onClose: () => void }) => {
+const CreateSchedule = ({ startDate, endDate, onClose }: { startDate: string, endDate: string, onClose: () => void }) => {
 
     const [selectedColor, setSelectedColor] = useState("");
     const { refetch } = useSelectedDate();
@@ -26,18 +28,14 @@ const CreateSchedule = ({ currentDate, onClose }: { currentDate: string, onClose
 
         if (!title || !hour || !color) return;
 
-        const schedule = {
-            title,
-            date: currentDate,
-            hour,
-            color
-        };
+        const dates = enumerateDates(startDate, endDate);
+        const titles = generateTitles(title, dates.length);
 
         try {
-            await postData<ScheduleType>(
-                "schedules", 
-                schedule, 
-                "Schedule"
+            await Promise.all(
+                dates.map((date, index) =>
+                    postData<ScheduleType>("schedules", { title: titles[index], date, hour, color }, "Schedule")
+                )
             );
             refetch();
         } catch (err) {
@@ -47,6 +45,7 @@ const CreateSchedule = ({ currentDate, onClose }: { currentDate: string, onClose
 
         onClose();
     };
+
     return (
         <div 
         className='

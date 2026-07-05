@@ -86,7 +86,7 @@ const TaskItemContainer = ({ cn, tasks = [], setTasks }: Props) => {
 
   return (
     <div
-      className={`max-h-120 flex flex-col flex-1 gap-1 px-4 overflow-x-hidden overflow-y-auto ${cn}`}
+      className={`max-h-120 flex flex-col flex-1 gap-2 px-4 overflow-x-hidden overflow-y-auto ${cn}`}
     >
       {tasks.length === 0 ? (
         <p className="m-auto text-3xl">No Tasks</p>

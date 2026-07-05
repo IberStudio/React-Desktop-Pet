@@ -27,6 +27,9 @@ def get_music_id():
     data = request.get_json()
     title = data['title']
 
+    if not title:
+        return jsonify({"error": "title query parameter is required"}), 400
+
     return jsonify(get_result(title))
 
 
@@ -35,12 +38,18 @@ def video_info():
     data = request.get_json()
     video_id = data['videoId']
     
+    if not video_id:
+        return jsonify({"error": "videoId query parameter is required"}), 400
+
     return jsonify(get_related(video_id))
 
 @stream_bp.route('/info', methods=['GET', 'PUT'])
 def get_music_info():
     data = request.get_json()
     id = data['id']
+
+    if not id:
+        return jsonify({"error": "id query parameter is required"}), 400
 
     return jsonify(get_info(id))
 

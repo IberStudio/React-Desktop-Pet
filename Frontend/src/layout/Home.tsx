@@ -5,6 +5,8 @@ import { useWindows } from "../context/WindowContext";
 import { icons } from "../utils/imports";
 import { LoadingProvider } from "../context/LoadingContext";
 import Tasks from "./Tasks";
+import { ScheduleContent } from "../features/Schedule/Schedule";
+import { useSelectedDate } from "../context/ScheduleContext";
 
 const HomeMusic = () => {
   const { 
@@ -99,6 +101,17 @@ const HomeTask = () => {
   )
 }
 
+const HomeSchedule = () => {
+
+  const { todayDate } = useSelectedDate();
+
+  return (
+    <div className="relative flex-1">
+      <ScheduleContent cn="w-full" todayDate={todayDate} />
+    </div>
+  )
+}
+
 const Home = () => {
 
   return (
@@ -106,7 +119,8 @@ const Home = () => {
     <div className="h-full flex flex-col">
       <div className={`relative flex-3 min-h-0 flex flex-row`}>
         <HomeTask />
-        </div>
+        <HomeSchedule />
+      </div>
       <HomeMusic />
     </div>
     </>

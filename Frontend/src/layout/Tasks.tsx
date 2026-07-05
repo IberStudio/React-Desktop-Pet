@@ -4,6 +4,7 @@ import TaskItemContainer from "../components/TasksItem";
 import { getData } from "../utils/api";
 import type { Task } from "../types/task";
 import { theme } from "../constants/theme";
+import { LoadingProvider } from "../context/LoadingContext";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -12,7 +13,7 @@ const Tasks = () => {
     const loadTasks = async () => {
       let data
       try {
-        data = await getData<Task[]>("tasks");
+        data = await getData<Task[]>("tasks", "Task Items");
       }
       finally {
       }
@@ -25,6 +26,7 @@ const Tasks = () => {
     <div
     className={`w-full h-full flex flex-row`}
     >
+      <LoadingProvider loadingKey='Task Items'/>
       <div
       className={`
         relative
