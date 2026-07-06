@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { icons } from "../utils/imports"
 import Button from "../components/Button";
-import Window from "../components/Window";
-import { BorderSize } from "../constants/borders";
-import { theme } from "../constants/theme";
 
 const Timer = () => {
 

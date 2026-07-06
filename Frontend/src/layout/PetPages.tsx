@@ -8,7 +8,6 @@ const PetPages = () => {
     
 
     const {
-        setVisible,
     } = usePet();
 
     return (

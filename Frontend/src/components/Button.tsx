@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BorderSize } from "../constants/borders";
 import { theme } from "../constants/theme";
 import { icons } from "../utils/imports";
@@ -23,8 +22,6 @@ const Button = ({ cn, value, type, size = BorderSize.medium, color, onClick }: B
 
     type ButtonType = "button" | "submit";
 
-    const [isChecked, setIsChecked] = useState(false);
-
     function isButtonType(value: any): value is ButtonType {
         return value === "button" || value === "submit";
     }
@@ -35,9 +32,8 @@ const Button = ({ cn, value, type, size = BorderSize.medium, color, onClick }: B
             <input 
             type="checkbox" 
             checked={typeof value !== "string" && value.value}
-            onChange={(e) => {
+            onChange={() => {
                 onClick && onClick();
-                setIsChecked(e.target.checked)
             }}
             style={{ '--check-icon': `url(${icons.tick})` } as React.CSSProperties}
             className={`

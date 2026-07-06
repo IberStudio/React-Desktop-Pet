@@ -11,7 +11,6 @@ import { useSelectedDate } from "../context/ScheduleContext";
 const HomeMusic = () => {
   const { 
     currentTrack,
-    nextTrack,
     isPlaying,
     currentTime,
     duration,
@@ -103,11 +102,11 @@ const HomeTask = () => {
 
 const HomeSchedule = () => {
 
-  const { todayDate } = useSelectedDate();
+  const { todaySchedule, todayDate } = useSelectedDate();
 
   return (
     <div className="relative flex-1">
-      <ScheduleContent cn="w-full" todayDate={todayDate} />
+      <ScheduleContent cn="w-full" todaySchedule={todaySchedule} todayDate={todayDate} />
     </div>
   )
 }

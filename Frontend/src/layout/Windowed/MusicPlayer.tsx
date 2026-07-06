@@ -7,7 +7,6 @@ const MusicPlayer = () => {
 
     const {
             currentTrack,
-            nextTrack,
             isPlaying,
             currentTime,
             duration,

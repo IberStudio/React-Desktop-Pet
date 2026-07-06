@@ -10,8 +10,8 @@ import { dateToDay } from '../Schedule/utils/dateFormat'
 import { useMemo } from 'react'
 import type { ScheduleType } from './types/schedule'
 
-export const ScheduleContent = ({ cn, todayDate }: { cn?: string, todayDate?: string }) => {
-    const { selectedStart, scheduleData, todaySchedule, deleteSchedule, deleteByDate } = useSelectedDate();
+export const ScheduleContent = ({ cn, todaySchedule, todayDate }: { cn?: string, todaySchedule?: ScheduleType[], todayDate?: string }) => {
+    const { selectedStart, scheduleData, deleteSchedule, deleteByDate } = useSelectedDate();
 
     const displayData = todaySchedule ? todaySchedule : scheduleData;
 

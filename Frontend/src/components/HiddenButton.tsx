@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { borders, icons } from '../utils/imports';
+import { icons } from '../utils/imports';
 import gsap from 'gsap';
 import { useGSAP } from "@gsap/react"
 import { theme } from '../constants/theme';

@@ -2,9 +2,8 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { TrackOutput } from '../types/track'
 import { getData, putData } from '../utils/api'
-import { useLoading } from './LoadingContext';
 
-const API_BASE = `http://${window.location.hostname}:5000/api`;
+const API_BASE = `http://${window.location.hostname || "localhost"}:5000/api/`;
 
 type PlayerContextType = {
     player: React.RefObject<HTMLAudioElement | null>;

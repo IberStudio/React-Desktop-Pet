@@ -1,7 +1,7 @@
 import type { Endpoint } from "../types/endpoint";
 import { triggerLoading } from "../services/loadingBridge";
 
-const API_URL = `http://${window.location.hostname}:5000/api/`;
+const API_URL = `http://${window.location.hostname || "localhost"}:5000/api/`;
 
 const getApiUrl = () => API_URL;
 
